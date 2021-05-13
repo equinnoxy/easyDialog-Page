@@ -35,17 +35,6 @@ Returns 1 if the dialog is opened for the specified player.
 Dialog_Opened(playerid);
 ```
 
-## Callback
-
-This callback is called before a dialog is shown to a player (using Dialog_Show, that is). Returning 0 under this callback will prevent the dialog from working.
-
-```pawn
-public OnDialogPerformed(playerid, dialog[], response, success)
-{
-    return 1;
-}
-```
-
 ## Example
 
 ```pawn
@@ -67,20 +56,9 @@ Dialog:WeaponMenu(playerid, response, listitem, inputtext[])
     }
     return 1;
 }
-
-public OnDialogPerformed(playerid, dialog[], response, success)
-{
-    if (!strcmp(dialog, "WeaponMenu") && IsPlayerInAnyVehicle(playerid))
-    {
-        SendClientMessage(playerid, -1, "You must be on-foot to spawn a weapon.");
-        return 0;
-    }
-    return 1;
-}
 ```
 
 ## Credits
 Emmet_ - for easyDialog
 HPQ123 - for new version
 Southclaws - for sampctl
-AliLogic - for const correction
