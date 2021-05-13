@@ -20,7 +20,7 @@ However, easyDialog.inc fixes that by introducing a "named dialog feature" which
 Show dialog to player
 
 ```pawn
-Dialog_Show(playerid, dialog, style, caption[], info[], button1[], button2[], {Float,_}:...);
+Dialog_Show(playerid, dialog, style, caption[], info[], button1[], button2[]);
 ```
 
 Closes any opened dialogs.
