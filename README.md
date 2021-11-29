@@ -14,6 +14,7 @@ However, easyDialog.inc fixes that by introducing a "named dialog feature" which
 | Named Dialogs                |        No        |       Yes      |
 | Calling a dialog manually    |        No        |       Yes      |
 | Custom callback for handling |        No        |       Yes      |
+| Fake Dialog                  |        No        |       Yes      |
 
 ## Functions
 
