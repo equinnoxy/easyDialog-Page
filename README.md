@@ -34,7 +34,7 @@ Show pages dialog to player
 
 ```pawn
 Dialog_ShowPages(playerid, dialog, style, caption[], info[], button1[], button2[]);
-
+```
 * style
     * DIALOG_STYLE_LIST
     * DIALOG_STYLE_TABLIST
@@ -42,7 +42,6 @@ Dialog_ShowPages(playerid, dialog, style, caption[], info[], button1[], button2[
     
 !Important
    always use '\n' it at the end! 
-```
 
 Show format pages dialog to player
 ```pawn
@@ -103,4 +102,5 @@ Dialog:vehicles(playerid, response, listitem, inputtext[])
 ```
 
 ## Credits
-* HPQ123 - updated
+* Creator: HPQ123
+* Tester: IonchyAdv
