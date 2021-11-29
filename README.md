@@ -48,10 +48,9 @@ Show format pages dialog to player
 ```pawn
 Dialog_ShowPagesEx(playerid, dialog, style, caption[], info[], button1[], button2[], ...);
 ```
-![Capture](https://user-images.githubusercontent.com/72431287/143889449-2ee7234e-45b3-40bc-98e7-0e6b81ba5d9e.PNG)
-![Capture](https://user-images.githubusercontent.com/72431287/143889520-8b20ba23-70a4-4800-838e-a1b88c42272f.PNG)
-![Capture](https://user-images.githubusercontent.com/72431287/143889567-8b9d019c-f60f-4c3e-ab49-ba8d2fca075f.PNG)
-
+![Capture](https://user-images.githubusercontent.com/72431287/143889707-a718aa8f-5def-4790-95a2-213d40d61f61.PNG)
+![Capture](https://user-images.githubusercontent.com/72431287/143889750-29343d4d-34c3-470a-b1d5-601f7e3cda9a.PNG)
+![Capture](https://user-images.githubusercontent.com/72431287/143889800-bd18d443-6d51-4c56-a362-a2555591944c.PNG)
 
 
 Closes any opened dialogs.
