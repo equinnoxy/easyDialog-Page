@@ -24,6 +24,31 @@ Show dialog to player
 Dialog_Show(playerid, dialog, style, caption[], info[], button1[], button2[]);
 ```
 
+Show format dialog to player
+
+```pawn
+Dialog_ShowEx(playerid, dialog, style, caption[], info[], button1[], button2[], ...);
+```
+
+Show pages dialog to player
+
+```pawn
+Dialog_ShowPages(playerid, dialog, style, caption[], info[], button1[], button2[]);
+
+* style
+    * DIALOG_STYLE_LIST
+    * DIALOG_STYLE_TABLIST
+    * DIALOG_STYLE_TABLIST_HEADERS
+    
+!Important
+   always use '\n' it at the end! 
+```
+
+Show format pages dialog to player
+```pawn
+Dialog_ShowPagesEx(playerid, dialog, style, caption[], info[], button1[], button2[], ...);
+```
+
 Closes any opened dialogs.
 
 ```pawn
@@ -57,9 +82,21 @@ Dialog:WeaponMenu(playerid, response, listitem, inputtext[])
     }
     return 1;
 }
+
+CMD:vehicles(playerid, params[]) {
+    Dialog_Show(playerid, vehicles, DIALOG_STYLE_LIST, "Weapon Menu", "Infernus\nSultan\nBullet\nInfernus\nSultan\nBullet\nInfernus\nSultan\nBullet\nMaverick\nShamal", "Select", "Cancel");
+    return 1;
+}
+
+Dialog:vehicles(playerid, response, listitem, inputtext[])
+{
+    if(!response) return 1;
+    new str[64];
+    format(str, 64, "You have selected the '%s' and id %d.", inputtext, listitem);
+    SendClientMessage(playerid, -1, str);
+    return 1;
+}
 ```
 
 ## Credits
-Emmet_ - for easyDialog
-HPQ123 - for new version
-Southclaws - for sampctl
+* HPQ123 - updated
