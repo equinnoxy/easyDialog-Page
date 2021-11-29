@@ -1,7 +1,8 @@
 /*
-  *** easy Dialog v0.0.2 ***
+  *** easy Dialog v0.0.3 ***
   *	  by HPQ123
   *   contact Discord: HPQ123#8114
+  *   Tester: IonchyAdv
   ***	    ****		 ***
 */
 #define DIALOG_SIMPLE 				5000
@@ -16,7 +17,7 @@ enum e_DIALOG_ENUM {
 	DL_CurrentPage,
 	DL_DivPage,
 	DL_Style,
-	DL_Headers[32],
+	DL_Headers[64],
 	DL_Char[25],
 	DL_Caption[32],
 	DL_Info[64 * 64],
@@ -25,7 +26,7 @@ enum e_DIALOG_ENUM {
 }
 
 new 
-	dialogData[MAX_PLAYERS][e_DIALOG_ENUM],DL_String[256],DL_String2[200],DL_Name[MAX_PLAYERS][40 char],
+	dialogData[MAX_PLAYERS][e_DIALOG_ENUM],DL_String[1094],DL_String2[1094],DL_Name[MAX_PLAYERS][40 char],
 	DL_RVAR[e_DIALOG_ENUM]={0,0,0,0,DIALOG_STYLE_INPUT,"",{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}," ", " ", " ", " "}
 ;
 
@@ -33,7 +34,7 @@ new
 	((dialogData[%0][DL_Status]=ShowPlayerDialog(%0, DIALOG_SIMPLE, %2, %3, %4, %5, %6)),strpack(DL_Name[%0], #dialog_##%1, 40 char))
 
 #define Dialog_ShowPages(%0,%1,%2,%3,%4,%5,%6) \
-	((dialogData[%0][DL_Status]=DL_internPages(%0, %2, %3, %4, %5, %6, dialogData[%0][DL_DivPage]=10)),strpack(DL_Name[%0], #dialog_##%1, 40 char))
+	((dialogData[%0][DL_Status]=DL_internPages(%0, %2, %3, %4, %5, %6)),strpack(DL_Name[%0], #dialog_##%1, 40 char))
 
 #define Dialog_ShowEx(%0,%1,%2,%3,%4,%5,%6,%7) \
 	format(DL_String2, sizeof DL_String2, %4, %7)&&Dialog_Show(%0,%1,%2,%3,DL_String2,%5,%6)
@@ -48,8 +49,8 @@ stock DL_internPages(playerid, style, const caption[], const info[], const butto
 	dialogData[playerid] = DL_RVAR;
 	strmid(dialogData[playerid][DL_Info], info, 0, 64 * 64);
 	strmid(dialogData[playerid][DL_Caption], caption, 0, 32);
-	strmid(dialogData[playerid][DL_Button1], caption, 0, 32);
-	strmid(dialogData[playerid][DL_Button2], caption, 0, 32);
+	strmid(dialogData[playerid][DL_Button1], button1, 0, 32);
+	strmid(dialogData[playerid][DL_Button2], button2, 0, 32);
 	dialogData[playerid][DL_Style] = style;
 	dialogData[playerid][DL_DivPage] = _default;
 
@@ -74,30 +75,35 @@ stock DL_AddButtons(playerid, max=0) {
 
 stock DL_fresh(playerid, current) {
 	if(dialogData[playerid][DL_Style]==DIALOG_STYLE_TABLIST_HEADERS) {
-		strmid(DL_String, dialogData[playerid][DL_Headers], 0, 32);
+		strmid(DL_String, dialogData[playerid][DL_Headers], 0, 64);
 		strmid(DL_String2, dialogData[playerid][DL_Info], dialogData[playerid][DL_Char][current], dialogData[playerid][DL_Char][current+1]);
 		strcat(DL_String, DL_String2);
 	} else strmid(DL_String, dialogData[playerid][DL_Info], dialogData[playerid][DL_Char][current], dialogData[playerid][DL_Char][current+1]);
 
 	DL_AddButtons(playerid);
-	ShowPlayerDialog(playerid, DIALOG_PAGES, dialogData[playerid][DL_Style], dialogData[playerid][DL_Caption], DL_String, dialogData[playerid][DL_Button1], dialogData[playerid][DL_Button2]);
-	return true;
+	return dialogData[playerid][DL_Status]=ShowPlayerDialog(playerid, DIALOG_PAGES, dialogData[playerid][DL_Style], dialogData[playerid][DL_Caption], DL_String, dialogData[playerid][DL_Button1], dialogData[playerid][DL_Button2]);
 }
 
-public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
-{
+public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	new x=-1;
-	for(;inputtext[++x];) if inputtext[x] != '%' *then continue; else inputtext[x] = '#'; inputtext[x] = '\1';
+	for(;inputtext[++x];) if inputtext[x] != '%' *then continue; else inputtext[x] = '#';
 	switch(dialogid) {
-		case DIALOG_SIMPLE: CallLocalFunction(DL_Name[playerid], #iiis, playerid, response, listitem, inputtext);
+		case DIALOG_SIMPLE: {
+			if(!Dialog_Opened(playerid)) return true; dialogData[playerid][DL_Status] = false;
+			CallLocalFunction(DL_Name[playerid], #iiis, playerid, response, listitem, (inputtext[0])?(inputtext):("\1"));
+		}
 		case DIALOG_PAGES: {
+			if(!Dialog_Opened(playerid)) return true; dialogData[playerid][DL_Status] = false;
 			new next_page=dialogData[playerid][DL_DivPage],prev_page=next_page+1;
 			if(dialogData[playerid][DL_CurrentPage] == (dialogData[playerid][DL_Collumn]-1)/next_page) 
 				prev_page=listitem != next_page ? (dialogData[playerid][DL_Collumn]%next_page):next_page,next_page = -1;
 
-			if(listitem == next_page) return DL_fresh(playerid, ++dialogData[playerid][DL_CurrentPage]);
-			if(listitem == prev_page) return DL_fresh(playerid, --dialogData[playerid][DL_CurrentPage]);
-			CallLocalFunction(DL_Name[playerid], #iiis, playerid, response, listitem + (dialogData[playerid][DL_CurrentPage] * dialogData[playerid][DL_DivPage]), inputtext);
+			if(listitem == next_page || listitem == prev_page) {
+				if(!response) return CallLocalFunction(DL_Name[playerid], #iiis, playerid, response, listitem, "\1");
+				if(listitem == next_page) return DL_fresh(playerid, ++dialogData[playerid][DL_CurrentPage]);
+				if(listitem == prev_page) return DL_fresh(playerid, --dialogData[playerid][DL_CurrentPage]);
+			}
+			CallLocalFunction(DL_Name[playerid], #iiis, playerid, response, listitem + (dialogData[playerid][DL_CurrentPage] * dialogData[playerid][DL_DivPage]), (inputtext[0])?(inputtext):("\1"));
 		}
 	}
 	#if defined DL_OnDialogResponse
