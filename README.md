@@ -38,7 +38,7 @@ Dialog_ShowPages(playerid, dialog, style, caption[], info[], button1[], button2[
     * DIALOG_STYLE_TABLIST
     * DIALOG_STYLE_TABLIST_HEADERS
     
-!Important
+## Important
    always use '\n' it at the end! 
 
 Show format pages dialog to player
