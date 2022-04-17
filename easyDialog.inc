@@ -1,8 +1,7 @@
 /*
-  *** easy Dialog v0.0.3 ***
+  *** easy Dialog v0.0.4 ***
   *	  by HPQ123
   *   contact Discord: HPQ123#8114
-  *   Tester: IonchyAdv
   ***	    ****		 ***
 */
 #define DIALOG_SIMPLE 				5000
@@ -37,10 +36,10 @@ new
 	((dialogData[%0][DL_Status]=DL_internPages(%0, %2, %3, %4, %5, %6)),strpack(DL_Name[%0], #dialog_##%1, 40 char))
 
 #define Dialog_ShowEx(%0,%1,%2,%3,%4,%5,%6,%7) \
-	format(DL_String2, sizeof DL_String2, %4, %7)&&Dialog_Show(%0,%1,%2,%3,DL_String2,%5,%6)
+	format(DL_String2,_,%4,%7)&&Dialog_Show(%0,%1,%2,%3,DL_String2,%5,%6)
 
 #define Dialog_ShowPagesEx(%0,%1,%2,%3,%4,%5,%6,%7) \
-	format(DL_String2, sizeof DL_String2, %4, %7)&&Dialog_ShowPages(%0,%1,%2,%3,DL_String2,%5,%6)
+	format(DL_String2,_,%4,%7)&&Dialog_ShowPages(%0,%1,%2,%3,DL_String2,%5,%6)
 
 #define Dialog_Close(%0) \
 	ShowPlayerDialog(%0, (dialogData[%0][DL_Status]=0)-1, DIALOG_STYLE_MSGBOX, " ", " ", " ", " ");
@@ -62,12 +61,13 @@ stock DL_internPages(playerid, style, const caption[], const info[], const butto
 
 	dialogData[playerid][DL_Char][(dialogData[playerid][DL_Collumn]/_default)+1] = strlen(info);
 	DL_String[dialogData[playerid][DL_Char][1]] = '\0';
-	DL_AddButtons(playerid);
+	DL_AddButtons(playerid, _d_max(playerid));
 	return ShowPlayerDialog(playerid, DIALOG_PAGES, style, caption, DL_String, button1, button2),strmid(dialogData[playerid][DL_Headers], info, 0, strfind(info, "\n", true)+1);
 }
 
+static _d_max(playerid) return (dialogData[playerid][DL_Collumn]-1)/dialogData[playerid][DL_DivPage];
+
 stock DL_AddButtons(playerid, max=0) {
-	max=(dialogData[playerid][DL_Collumn]-1)/dialogData[playerid][DL_DivPage];
 	if(dialogData[playerid][DL_CurrentPage] != max && max) strcat(DL_String, "Next page\n");
 	if(dialogData[playerid][DL_CurrentPage] != 0) strcat(DL_String, "Prev page");
 	return true;
@@ -80,7 +80,7 @@ stock DL_fresh(playerid, current) {
 		strcat(DL_String, DL_String2);
 	} else strmid(DL_String, dialogData[playerid][DL_Info], dialogData[playerid][DL_Char][current], dialogData[playerid][DL_Char][current+1]);
 
-	DL_AddButtons(playerid);
+	DL_AddButtons(playerid, _d_max(playerid));
 	return dialogData[playerid][DL_Status]=ShowPlayerDialog(playerid, DIALOG_PAGES, dialogData[playerid][DL_Style], dialogData[playerid][DL_Caption], DL_String, dialogData[playerid][DL_Button1], dialogData[playerid][DL_Button2]);
 }
 
@@ -95,7 +95,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 		case DIALOG_PAGES: {
 			if(!Dialog_Opened(playerid)) return true; dialogData[playerid][DL_Status] = false;
 			new next_page=dialogData[playerid][DL_DivPage],prev_page=next_page+1;
-			if(dialogData[playerid][DL_CurrentPage] == (dialogData[playerid][DL_Collumn]-1)/next_page) 
+			if(dialogData[playerid][DL_CurrentPage] == _d_max(playerid) && _d_max(playerid)) 
 				prev_page=listitem != next_page ? (dialogData[playerid][DL_Collumn]%next_page):next_page,next_page = -1;
 
 			if(listitem == next_page || listitem == prev_page) {
