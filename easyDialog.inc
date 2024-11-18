@@ -44,7 +44,7 @@ new
 #define Dialog_Close(%0) \
 	ShowPlayerDialog(%0, (dialogData[%0][DL_Status]=0)-1, DIALOG_STYLE_MSGBOX, " ", " ", " ", " ");
 
-stock DL_internPages(playerid, style, const caption[], const info[], const button1[], const button2[], _default=10, lastpos=0) {
+stock DL_internPages(playerid, style, caption[], info[], button1[], button2[], _default=10, lastpos=0) {
 	dialogData[playerid] = DL_RVAR;
 	strmid(dialogData[playerid][DL_Info], info, 0, 64 * 64);
 	strmid(dialogData[playerid][DL_Caption], caption, 0, 128);
