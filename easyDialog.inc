@@ -85,8 +85,7 @@ stock DL_fresh(playerid, current) {
 }
 
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
-	new x=-1;
-	for(;inputtext[++x];) if inputtext[x] != '%' *then continue; else inputtext[x] = '#';
+	strreplace(inputtext, "%", "#", false, 0, -1, strlen(inputtext));
 	switch(dialogid) {
 		case DIALOG_SIMPLE: {
 			if(!Dialog_Opened(playerid)) return true; dialogData[playerid][DL_Status] = false;
