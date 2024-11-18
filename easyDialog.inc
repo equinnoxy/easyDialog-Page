@@ -68,8 +68,8 @@ stock DL_internPages(playerid, style, const caption[], const info[], const butto
 static _d_max(playerid) return (dialogData[playerid][DL_Collumn]-1)/dialogData[playerid][DL_DivPage];
 
 stock DL_AddButtons(playerid, max=0) {
-	if(dialogData[playerid][DL_CurrentPage] != max && max) strcat(DL_String, "Next page\n");
-	if(dialogData[playerid][DL_CurrentPage] != 0) strcat(DL_String, "Prev page");
+	if(dialogData[playerid][DL_CurrentPage] != max && max) strcat(DL_String, ">>\n");
+	if(dialogData[playerid][DL_CurrentPage] != 0) strcat(DL_String, "<<");
 	return true;
 }
 
