@@ -17,8 +17,8 @@ enum e_DIALOG_ENUM {
 	DL_DivPage,
 	DL_Style,
 	DL_Headers[64],
-	DL_Char[25],
-	DL_Caption[32],
+	DL_Char[64],
+	DL_Caption[128],
 	DL_Info[64 * 64],
 	DL_Button1[32],
 	DL_Button2[32]
@@ -47,7 +47,7 @@ new
 stock DL_internPages(playerid, style, const caption[], const info[], const button1[], const button2[], _default=10, lastpos=0) {
 	dialogData[playerid] = DL_RVAR;
 	strmid(dialogData[playerid][DL_Info], info, 0, 64 * 64);
-	strmid(dialogData[playerid][DL_Caption], caption, 0, 32);
+	strmid(dialogData[playerid][DL_Caption], caption, 0, 128);
 	strmid(dialogData[playerid][DL_Button1], button1, 0, 32);
 	strmid(dialogData[playerid][DL_Button2], button2, 0, 32);
 	dialogData[playerid][DL_Style] = style;
